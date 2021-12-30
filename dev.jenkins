@@ -19,7 +19,7 @@ pipeline {
             steps {
                 echo " ============== start pushing image =================="
                 sh '''
-                 docker save test:latest | ssh ubuntu@ec2-3-128-87-72.us-east-2.compute.amazonaws.com
+                 docker save test:latest | bzip2 | ssh ubuntu@ec2-3-128-87-72.us-east-2.compute.amazonaws.com "bunzip2 | docker load"
                 '''
             }
         }
