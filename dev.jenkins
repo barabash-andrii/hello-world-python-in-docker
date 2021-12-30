@@ -1,0 +1,28 @@
+#!groovy
+// Run docker build
+properties([disableConcurrentBuilds()])
+
+pipeline {
+    agent any 
+    
+
+ stages {
+        stage("create docker image") {
+            steps {
+                echo " ============== start building image =================="
+                dir ('/') {
+                	sh 'docker build -t test:latest -f Dockerfile . '
+                }
+            }
+        }
+        stage("docker push") {
+            steps {
+                echo " ============== start pushing image =================="
+                sh '''
+                docker save test:latest | ssh ubuntu@ec2-3-128-87-72.us-east-2.compute.amazonaws.com
+                '''
+            }
+        }
+    }
+}
+
